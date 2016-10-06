@@ -64,17 +64,20 @@ class Client:
         assert response["error"] == None
         return response["result"]
 
+    ## RPC methods
+    ### general syntax is req($method, [array_of_parameters])
+    
     def getinfo(self):
         """return getinfo from ppcoind"""
         return self.req("getinfo")
 
     def walletpassphrase(self, passphrase, timeout=99999999, mint_only=True):
         '''used to unlock wallet for minting'''
-        return self.req("walletpassphrase", (passphrase, timeout, mint_only))
+        return self.req("walletpassphrase", [passphrase, timeout, mint_only])
 
     def getblock(self, blockhash):
         '''returns detail block info.'''
-        return self.req("getblock", (blockhash))
+        return self.req("getblock", [blockhash])
 
     def getblockcount(self):
         '''Retrieve last block index'''
@@ -82,15 +85,15 @@ class Client:
 
     def getblockhash(self, index):
         '''retrieve block hash'''
-        return self.req("getblockhash", (index))
+        return self.req("getblockhash", [index])
 
     def gettransaction(self, txid):
         '''get transaction info'''
-        return self.req("gettransaction", (txid))
+        return self.req("gettransaction", [txid])
 
     def getbalance(self, account="", minconf=6):
         '''retrieve balance, If [account] is specified, returns the balance in the account.'''
-        return self.req("getbalance", (account, minconf))
+        return self.req("getbalance", [account, minconf])
 
     def getdifficulty(self):
         '''Get PoS/PoW difficulty'''
@@ -102,20 +105,20 @@ class Client:
 
     def getaddressesbyaccount(self, account=""):
         '''can be used to list asociated addresses'''
-        return self.req("getaddressesbyaccount", (account))
+        return self.req("getaddressesbyaccount", [account])
 
     def getnewaddress(self, label=""):
-        return self.req("getnewaddress", (label))
+        return self.req("getnewaddress", [label])
 
     def sendtoaddress(self, recv_addr, amount, comment=""):
         '''send ammount to address, with optional comment. Returns txid.
         sendtoaddress(ADDRESS, AMMOUNT, COMMENT)'''
-        return self.req("sendtoaddress", (recv_addr, amount, comment))
+        return self.req("sendtoaddress", [recv_addr, amount, comment])
 
     def sendmany(self, recv_dict, account="", comment=""):
         '''send outgoing tx to many addresses, input is dict of addr:coins, returns txid'''
         #{"addr1":#coin,"addr2":#coin,"addr3":#coin...}
-        return self.req("sendmany", (account, recv_dict, comment))
+        return self.req("sendmany", [account, recv_dict, comment])
 
     def getconnectioncount(self):
         '''Get number of active connections'''
@@ -123,7 +126,7 @@ class Client:
 
     def getrawtransaction(self, txid, verbose=1):
         '''get raw transaction'''
-        return self.req("getrawtransaction", (txid, verbose))
+        return self.req("getrawtransaction", [txid, verbose])
 
     def getrawmempool(self):
         '''returns raw mempool'''
@@ -131,19 +134,19 @@ class Client:
 
     def listtransactions(self, account="", many=999, since=0):
         '''list all transactions associated with this wallet'''
-        return self.req("listtransactions", (account, many, since))
+        return self.req("listtransactions", [account, many, since])
 
     def listreceivedbyaddress(self, minconf=0, includeempty=True):
         '''get list of all accounts in the wallet'''
-        return self.req("listreceivedbyaddress", (minconf, includeempty))
+        return self.req("listreceivedbyaddress", [minconf, includeempty])
 
     def listunspent(self, minconf=1, maxconf=999999): #listunspent 0 999999 '["1BxtgEa8UcrMzVZaW32zVyJh4Sg4KGFzxA"]'
         '''list only unspent UTXO's'''
-        return self.req("listunspent", (minconf, maxconf))
+        return self.req("listunspent", [minconf, maxconf])
 
     def dumpprivkey(self, addr):
         '''returns privkey of address'''
-        return self.req("dumpprivkey", (addr))
+        return self.req("dumpprivkey", [addr])
 
     def createrawtransaction(self, inputs, outputs):
         '''[{"txid":input_txid,"vout":0}, ...], {recv_addr: amount, change: amount, ...}'''
@@ -151,29 +154,29 @@ class Client:
             raise ValueError('inputs variable must be a list!')
         if type(outputs) != dict:
             raise ValueError('outputs variable must be a dictionary!')
-        return self.req("createrawtransaction", (inputs, outputs))
+        return self.req("createrawtransaction", [inputs, outputs])
     
     def decoderawtransaction(self, txhash):
         '''dump the transaction draft'''
-        return self.req("decoderawtransaction", (txhash))
+        return self.req("decoderawtransaction", [txhash])
 
     def signrawtransaction(self, rawtxhash):
         '''signrawtransaction with privkey, returns status and rawtxhash'''
-        return self.req("signrawtransaction", (rawtxhash))
+        return self.req("signrawtransaction", [rawtxhash])
 
     def sendrawtransaction(self, signed_rawtxhash):
         '''sends raw transaction, returns txid'''
-        return self.req("sendrawtransaction", (signed_rawtxhash, 1))
+        return self.req("sendrawtransaction", [signed_rawtxhash, 1])
 
     def validateaddress(self, address):
         '''Return information about address.'''
-        return self.req("validateaddress", (address))
+        return self.req("validateaddress", [address])
 
     def signmessage(self, address, message):
         '''Sign a message with the private key of an address.'''
-        return self.req("signmessage", (address, str(message)))
+        return self.req("signmessage", [address, str(message)])
     
     def verifymessage(self, signature, message):
         """Verify a signed message."""
-        return self.req("verifymessage", (signature, message))
+        return self.req("verifymessage", [signature, message])
 
