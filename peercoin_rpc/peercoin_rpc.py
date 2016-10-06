@@ -80,17 +80,17 @@ class Client:
         '''Retrieve last block index'''
         return self.req("getblockcount")
 
-    def getblockhash(self, block_number):
+    def getblockhash(self, index):
         '''retrieve block hash'''
-        return self.req("getblockhash", (block_number))
+        return self.req("getblockhash", (index))
 
     def gettransaction(self, txid):
         '''get transaction info'''
         return self.req("gettransaction", (txid))
 
-    def getbalance(self, account=""):
-        '''retrieve balance, If [account] is specified, returns the balance in the account. '''
-        return self.req("getbalance", (account))
+    def getbalance(self, account="", minconf=6):
+        '''retrieve balance, If [account] is specified, returns the balance in the account.'''
+        return self.req("getbalance", (account, minconf))
 
     def getdifficulty(self):
         '''Get PoS/PoW difficulty'''
