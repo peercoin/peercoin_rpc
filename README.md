@@ -9,6 +9,10 @@ There is a single class to be imported from the library - `Client`.
 
 > pip install --user git+git://github.com/peerchemist/peercoin_rpc.git
 
+or
+
+> pip install --user peercoin_rpc
+
 ## How to use
 
 > from peercoin_rpc import Client
@@ -20,5 +24,6 @@ Spawn a new Client object with desired arguments:
 Use it:
 
 > ppcnode.getinfo()
+
 > ppcnode.getpeerinfo()
 
