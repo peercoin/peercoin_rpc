@@ -20,3 +20,5 @@ Spawn a new Client object with desired arguments:
 Use it:
 
 > ppcnode.getinfo()
+> ppcnode.getpeerinfo()
+
