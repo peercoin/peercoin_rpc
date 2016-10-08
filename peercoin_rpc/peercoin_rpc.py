@@ -63,7 +63,7 @@ class Client:
         
         assert response["error"] == None
         return response["result"]
-
+        
     ## RPC methods
     ### general syntax is req($method, [array_of_parameters])
     
@@ -150,11 +150,12 @@ class Client:
 
     def createrawtransaction(self, inputs, outputs):
         '''[{"txid":input_txid,"vout":0}, ...], {recv_addr: amount, change: amount, ...}'''
-        if type(inputs) != list:
-            raise ValueError('inputs variable must be a list!')
-        if type(outputs) != dict:
-            raise ValueError('outputs variable must be a dictionary!')
-        return self.req("createrawtransaction", [inputs, outputs])
+        if not isinstance(outputs, dict):
+            raise TypeError('outputs variable must be a dictionary')
+        
+        inputs_list = [{"txid": txid, "vout": i} for i, txid in enumerate(inputs)]
+
+        return self.req("createrawtransaction", [inputs_list, outputs])
     
     def decoderawtransaction(self, txhash):
         '''dump the transaction draft'''
