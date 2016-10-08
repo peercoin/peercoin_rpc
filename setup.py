@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='peercoin_rpc',
-      version='0.2.1',
+      version='0.3',
       description='Library to communicate with peercoin daemon via JSON-RPC protocol.',
       url='https://github.com/peerchemist/peercoin_rpc',
       download_url = 'https://github.com/peerchemist/peercoin_rpc/archive/v0.2.tar.gz',
