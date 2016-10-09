@@ -150,7 +150,7 @@ class Client:
 
     def createrawtransaction(self, inputs, outputs):
         '''[{"txid":input_txid,"vout":0}, ...], {recv_addr: amount, change: amount, ...}'''
-        return self.req("createrawtransaction", [inputs_list, outputs])
+        return self.req("createrawtransaction", [inputs, outputs])
     
     def decoderawtransaction(self, txhash):
         '''dump the transaction draft'''
