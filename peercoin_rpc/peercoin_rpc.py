@@ -150,6 +150,10 @@ class Client:
 
     def createrawtransaction(self, inputs, outputs):
         '''[{"txid":input_txid,"vout":0}, ...], {recv_addr: amount, change: amount, ...}'''
+        if not isinstance(outputs, dict):
+            raise TypeError('outputs variable must be a dictionary')
+        if not isinstance(inputs, list):
+            raise TypeError('inputs variable must be a list')      
         return self.req("createrawtransaction", [inputs, outputs])
     
     def decoderawtransaction(self, txhash):
