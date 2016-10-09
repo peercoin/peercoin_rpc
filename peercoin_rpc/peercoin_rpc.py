@@ -152,10 +152,9 @@ class Client:
         '''[{"txid":input_txid,"vout":0}, ...], {recv_addr: amount, change: amount, ...}'''
         if not isinstance(outputs, dict):
             raise TypeError('outputs variable must be a dictionary')
-        
-        inputs_list = [{"txid": txid, "vout": i} for i, txid in enumerate(inputs)]
-
-        return self.req("createrawtransaction", [inputs_list, outputs])
+        if not isinstance(inputs, list):
+            raise TypeError('inputs variable must be a list')      
+        return self.req("createrawtransaction", [inputs, outputs])
     
     def decoderawtransaction(self, txhash):
         '''dump the transaction draft'''
