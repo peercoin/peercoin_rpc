@@ -1,4 +1,4 @@
-Source: peercoin-rpc
+Source: python-peercoinrpc
 Section: python
 Priority: optional
 Maintainer: Peerchemist, <peerchemist@protonmail.ch>
