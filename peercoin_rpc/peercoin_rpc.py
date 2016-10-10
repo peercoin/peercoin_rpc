@@ -91,9 +91,12 @@ class Client:
         '''get transaction info'''
         return self.req("gettransaction", [txid])
 
-    def getbalance(self, account="", minconf=6):
+    def getbalance(self, account=None, minconf=6):
         '''retrieve balance, If [account] is specified, returns the balance in the account.'''
-        return self.req("getbalance", [account, minconf])
+        if account:
+            return self.req("getbalance", [account, minconf])
+        else:
+            return self.req("getbalance")
 
     def getdifficulty(self):
         '''Get PoS/PoW difficulty'''
