@@ -1,5 +1,8 @@
 # peercoin_rpc
 
+[[![PyPI](https://img.shields.io/pypi/v/nine.svg?maxAge=2592000)](https://pypi.python.org/pypi/peercoin_rpc/0.3)
+[![PyPI](https://img.shields.io/pypi/pyversions/Django.svg?maxAge=2592000)](https://pypi.python.org/pypi/peercoin_rpc/0.3)
+
 Peercoin_rpc is a simple and minimal library made for communication with `ppcoind` via JSON-RPC protocol.
 It has a single dependency - a python `requests` library and it supports both mainnet and testnet peercoin network with authentication or SSL encryption.
 There is a single class to be imported from the library - `Client`.
