@@ -1,3 +1,7 @@
-peercoin-rpc (0.3-1) stable; urgency=low
+python-peercoinrpc (0.4-1) stable; urgency=low
+  * Package renamed, library updated.
+ --  <peerchemist@protonmail.ch>  Mon, 10 Oct 2016 20:20:19 +0000
+
+python-peercoinrpc (0.3-1) stable; urgency=low
   * Initial release.
  --  <peerchemist@protonmail.ch>  Sat, 08 Oct 2016 09:53:20 +0000
