@@ -1,6 +1,6 @@
 # peercoin_rpc
 
-[[![PyPI](https://img.shields.io/pypi/v/nine.svg?maxAge=2592000)](https://pypi.python.org/pypi/peercoin_rpc/0.3)
+[![PyPI](https://img.shields.io/pypi/v/nine.svg?maxAge=2592000)](https://pypi.python.org/pypi/peercoin_rpc/0.3)
 [![PyPI](https://img.shields.io/pypi/pyversions/Django.svg?maxAge=2592000)](https://pypi.python.org/pypi/peercoin_rpc/0.3)
 
 Peercoin_rpc is a simple and minimal library made for communication with `ppcoind` via JSON-RPC protocol.
