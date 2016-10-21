@@ -21,7 +21,7 @@ import requests, json
 
 class Client:
     
-    def __init__(self, testnet=False, username=None, password=None, ip="127.0.0.1"):
+    def __init__(self, testnet=False, username=None, password=None, ip="127.0.0.1", port=None):
 
         self.ip = ip
         if not username and not password:
@@ -36,6 +36,9 @@ class Client:
         else:
             self.testnet = False
             self.port = 9902
+            self.url = 'http://{0}:{1}'.format(self.ip, self.port)
+        if port is not None:
+            self.port = port
             self.url = 'http://{0}:{1}'.format(self.ip, self.port)
 
         self.headers = {'content-type': 'application/json'}
