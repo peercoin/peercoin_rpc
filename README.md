@@ -1,5 +1,6 @@
 # peercoin_rpc
 
+[![tip for next commit](https://peer4commit.com/projects/193.svg)](https://peer4commit.com/projects/193)
 [![PyPI](https://img.shields.io/pypi/pyversions/Django.svg?maxAge=2592000)](https://pypi.python.org/pypi/peercoin_rpc/0.3)
 
 Peercoin_rpc is a simple and minimal library made for communication with `ppcoind` via JSON-RPC protocol.
