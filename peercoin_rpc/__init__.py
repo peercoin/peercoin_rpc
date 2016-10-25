@@ -1,2 +1,2 @@
 from peercoin_rpc import Client
-__version__ = 0.3
+__version__ = 0.4

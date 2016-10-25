@@ -1,20 +1,20 @@
 # peercoin_rpc
 
-[![PyPI](https://img.shields.io/pypi/v/nine.svg?maxAge=2592000)](https://pypi.python.org/pypi/peercoin_rpc/0.3)
 [![PyPI](https://img.shields.io/pypi/pyversions/Django.svg?maxAge=2592000)](https://pypi.python.org/pypi/peercoin_rpc/0.3)
 
 Peercoin_rpc is a simple and minimal library made for communication with `ppcoind` via JSON-RPC protocol.
-It has a single dependency - a python `requests` library and it supports both mainnet and testnet peercoin network with authentication or SSL encryption.
+It has a single dependency - a Python `requests` library and it supports both mainnet and testnet peercoin network with authentication or SSL encryption.
 There is a single class to be imported from the library - `Client`.
+
 `Client` class methods are named the same as `ppcoind` RPC methods so learning curve is non-existant.
 
 ## Install
 
-> pip install --user git+git://github.com/peerchemist/peercoin_rpc.git
+> pip install git+git://github.com/peerchemist/peercoin_rpc.git
 
 or
 
-> pip install --user peercoin_rpc
+> pip install peercoin_rpc
 
 ## How to use
 
@@ -22,11 +22,13 @@ or
 
 Spawn a new Client object with desired arguments:
 
-> ppcnode = Client(testnet=True, username="username", password="password")
+> ppcnode = Client(testnet=True, username="username", password="password", ip=<ip>, port=<port>)
 
 Use it:
 
 > ppcnode.getinfo()
 
 > ppcnode.getpeerinfo()
+
+> ppcnode.getbalance()
 
