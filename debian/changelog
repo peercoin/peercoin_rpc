@@ -1,7 +1,3 @@
-python-peercoinrpc (0.41-1) stable; urgency=low
-  * Fixed import error.
- --  <peerchemist@protonmail.ch>  Thu, 27 Oct 2016 10:34:22 +0000
-
 python-peercoinrpc (0.4-1) stable; urgency=low
   * Package renamed, library updated.
  --  <peerchemist@protonmail.ch>  Mon, 10 Oct 2016 20:20:19 +0000

@@ -19,7 +19,7 @@ or
 
 ## How to use
 
-> import peercoin_rpc
+> from peercoin_rpc import Client
 
 Spawn a new Client object with desired arguments:
 
