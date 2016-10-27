@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='peercoin_rpc',
-      version='0.4',
+      version='0.41',
       description='Library to communicate with peercoin daemon via JSON-RPC protocol.',
       url='https://github.com/peerchemist/peercoin_rpc',
       author='Peerchemist',
@@ -9,7 +9,7 @@ setup(name='peercoin_rpc',
       license='MIT',
       packages=['peercoin_rpc'],
       install_requires=['requests'],
-      keywords = ['peercoin', 'json-rpc', 'cryptocurrency'],
+      keywords=['peercoin', 'json-rpc', 'cryptocurrency'],
       classifiers=[
           'Programming Language :: Python',
           'Programming Language :: Python :: 2.7',
