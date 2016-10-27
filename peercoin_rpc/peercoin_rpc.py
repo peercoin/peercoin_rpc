@@ -20,7 +20,8 @@ import getpass
 import requests, json
 
 class Client:
-    
+    '''JSON-RPC Client.'''
+
     def __init__(self, testnet=False, username=None, password=None, ip="127.0.0.1", port=None):
 
         self.ip = ip
@@ -29,7 +30,7 @@ class Client:
         else:
             self.username = username
             self.password = password
-        if testnet == True:
+        if testnet is True:
             self.testnet = True
             self.port = 9904
             self.url = 'http://{0}:{1}'.format(self.ip, self.port)
