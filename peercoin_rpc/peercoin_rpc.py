@@ -153,8 +153,12 @@ class Client:
         return self.req("listunspent", [minconf, maxconf])
 
     def dumpprivkey(self, addr):
-        '''returns privkey of address'''
+        '''returns privkey of address in WIF format.'''
         return self.req("dumpprivkey", [addr])
+
+    def importprivkey(self, wif):
+        '''Import privatekey in WIF format'''
+        return self.req("importprivkey", wif)
 
     def createrawtransaction(self, inputs, outputs):
         '''[{"txid":input_txid,"vout":0}, ...], {recv_addr: amount, change: amount, ...}'''
