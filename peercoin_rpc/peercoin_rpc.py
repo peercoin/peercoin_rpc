@@ -115,6 +115,7 @@ class Client:
         return self.req("getaddressesbyaccount", [account])
 
     def getnewaddress(self, label=""):
+        '''return new address'''
         return self.req("getnewaddress", [label])
 
     def sendtoaddress(self, recv_addr, amount, comment=""):
@@ -147,7 +148,7 @@ class Client:
         '''get list of all accounts in the wallet'''
         return self.req("listreceivedbyaddress", [minconf, includeempty])
 
-    def listunspent(self, minconf=1, maxconf=999999): #listunspent 0 999999 '["1BxtgEa8UcrMzVZaW32zVyJh4Sg4KGFzxA"]'
+    def listunspent(self, minconf=1, maxconf=999999):
         '''list only unspent UTXO's'''
         return self.req("listunspent", [minconf, maxconf])
 
@@ -160,9 +161,9 @@ class Client:
         if not isinstance(outputs, dict):
             raise TypeError('outputs variable must be a dictionary')
         if not isinstance(inputs, list):
-            raise TypeError('inputs variable must be a list')      
+            raise TypeError('inputs variable must be a list')
         return self.req("createrawtransaction", [inputs, outputs])
-    
+
     def decoderawtransaction(self, txhash):
         '''dump the transaction draft'''
         return self.req("decoderawtransaction", [txhash])
@@ -182,7 +183,7 @@ class Client:
     def signmessage(self, address, message):
         '''Sign a message with the private key of an address.'''
         return self.req("signmessage", [address, str(message)])
-    
+
     def verifymessage(self, signature, message):
         """Verify a signed message."""
         return self.req("verifymessage", [signature, message])
