@@ -64,13 +64,13 @@ class Client:
                     "params": params,
                     "jsonrpc": "1.1"})
                 ).json()
-        
-        assert response["error"] == None
+
+        assert response["error"] is None
         return response["result"]
-        
+
     ## RPC methods
     ### general syntax is req($method, [array_of_parameters])
-    
+
     def getinfo(self):
         """return getinfo from ppcoind"""
         return self.req("getinfo")
@@ -158,7 +158,7 @@ class Client:
 
     def importprivkey(self, wif):
         '''Import privatekey in WIF format'''
-        return self.req("importprivkey", wif)
+        return self.req("importprivkey", [wif])
 
     def createrawtransaction(self, inputs, outputs):
         '''[{"txid":input_txid,"vout":0}, ...], {recv_addr: amount, change: amount, ...}'''
