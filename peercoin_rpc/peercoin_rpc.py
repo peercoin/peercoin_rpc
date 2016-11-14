@@ -58,15 +58,17 @@ class Client:
     def req(self, method, params=()):
         """send request to ppcoind"""
 
-        response = requests.post(self.url, 
-            auth=(self.username, self.password), headers=self.headers, 
+        response = requests.post(self.url,
+            auth=(self.username, self.password), headers=self.headers,
             data=json.dumps({"method": method,
                     "params": params,
                     "jsonrpc": "1.1"})
                 ).json()
 
-        assert response["error"] is None
-        return response["result"]
+        if response["error"] is not None:
+            return response["error"]
+        else:
+            return response["result"]
 
     ## RPC methods
     ### general syntax is req($method, [array_of_parameters])
