@@ -158,7 +158,7 @@ class Client:
         '''returns privkey of address in WIF format.'''
         return self.req("dumpprivkey", [addr])
 
-    def importprivkey(self, wif, account_name):
+    def importprivkey(self, wif, account_name=""):
         '''Import privatekey in WIF format'''
         return self.req("importprivkey", [wif, account_name])
 
