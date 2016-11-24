@@ -158,9 +158,9 @@ class Client:
         '''returns privkey of address in WIF format.'''
         return self.req("dumpprivkey", [addr])
 
-    def importprivkey(self, wif):
+    def importprivkey(self, wif, account_name):
         '''Import privatekey in WIF format'''
-        return self.req("importprivkey", [wif])
+        return self.req("importprivkey", [wif, account_name])
 
     def createrawtransaction(self, inputs, outputs):
         '''[{"txid":input_txid,"vout":0}, ...], {recv_addr: amount, change: amount, ...}'''
