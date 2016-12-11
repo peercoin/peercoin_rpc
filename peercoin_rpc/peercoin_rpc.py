@@ -124,6 +124,10 @@ class Client:
         '''get account associated with <address>'''
         return self.req("getaccount", [address])
 
+    def getaccountaddress(self, account):
+        '''get address associated with the <account>'''
+        return self.req("getaccountaddress", [account])
+
     def sendtoaddress(self, recv_addr, amount, comment=""):
         '''send ammount to address, with optional comment. Returns txid.
         sendtoaddress(ADDRESS, AMMOUNT, COMMENT)'''
