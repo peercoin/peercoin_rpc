@@ -120,6 +120,10 @@ class Client:
         '''return new address'''
         return self.req("getnewaddress", [label])
 
+    def getaccount(self, address):
+        '''get account associated with <address>'''
+        return self.req("getaccount", [address])
+
     def sendtoaddress(self, recv_addr, amount, comment=""):
         '''send ammount to address, with optional comment. Returns txid.
         sendtoaddress(ADDRESS, AMMOUNT, COMMENT)'''
