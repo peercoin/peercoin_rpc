@@ -149,7 +149,11 @@ class Client:
     def listreceivedbyaddress(self, minconf=0, includeempty=True):
         '''get list of all accounts in the wallet'''
         return self.req("listreceivedbyaddress", [minconf, includeempty])
-    
+
+    def listreceivedbyaccount(self, minconf=0, includeempty=True):
+        '''list received by account'''
+        return self.req("listreceivedbyaccount", [minconf, includeempty])
+
     def listaccounts(self, minconf=1):
         '''list accounts in the wallet'''
         return self.req("listaccounts", [minconf])
