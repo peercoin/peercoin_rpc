@@ -149,6 +149,10 @@ class Client:
     def listreceivedbyaddress(self, minconf=0, includeempty=True):
         '''get list of all accounts in the wallet'''
         return self.req("listreceivedbyaddress", [minconf, includeempty])
+    
+    def listaccounts(self, minconf=1):
+        '''list accounts in the wallet'''
+        return self.req("listaccounts", [minconf])
 
     def listunspent(self, minconf=1, maxconf=999999):
         '''list only unspent UTXO's'''
