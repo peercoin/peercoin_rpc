@@ -52,9 +52,9 @@ class Client:
                     username = line.split("=")[1].strip()
                 if line.startswith("rpcpassword"):
                     password = line.split("=")[1].strip()
-        
-            return username, password
-    
+
+        return username, password
+
     def req(self, method, params=()):
         """send request to ppcoind"""
 
