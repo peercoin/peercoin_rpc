@@ -22,9 +22,12 @@ import requests, json
 class Client:
     '''JSON-RPC Client.'''
 
-    def __init__(self, testnet=False, username=None, password=None, ip="127.0.0.1", port=None):
+    def __init__(self, testnet=False, username=None, password=None, ip=None, port=None):
 
-        self.ip = ip
+        if not ip:
+            self.ip = 'localhost' # default to localhost
+        else:
+            self.ip = ip
         if not username and not password:
             self.username, self.password = self.userpass() ## try to read from ~/.ppcoin
         else:
@@ -142,8 +145,11 @@ class Client:
         '''Get number of active connections'''
         return self.req("get_conn_count")
 
-    def getrawtransaction(self, txid, verbose=1):
-        '''get raw transaction'''
+    def getrawtransaction(self, txid, verbose=0):
+        '''get raw transaction
+        If verbose=0, returns serialized, hex-encoded data for transaction txid.
+        If verbose is non-zero, returns a JSON Object containing information about the transaction.
+        Returns an error if <txid> is unknown.'''
         return self.req("getrawtransaction", [txid, verbose])
 
     def getrawmempool(self):
