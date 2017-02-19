@@ -135,6 +135,10 @@ class Client:
         '''send ammount to address, with optional comment. Returns txid.
         sendtoaddress(ADDRESS, AMMOUNT, COMMENT)'''
         return self.req("sendtoaddress", [recv_addr, amount, comment])
+    
+    def sendfrom(self, account, address, amount):
+        '''send outgoing tx from specified account to a given address'''
+        return self.req("sendfrom", [account, address, amount])
 
     def sendmany(self, recv_dict, account="", comment=""):
         '''send outgoing tx to many addresses, input is dict of addr:coins, returns txid'''
