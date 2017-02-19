@@ -1,3 +1,7 @@
+python-peercoinrpc (0.48-1) stable; urgency=low
+  * Follow upstream.
+ --  <peerchemist@protonmail.ch>  Sun, 19 Feb 2017 16:46:05 +0000
+
 python-peercoinrpc (0.47-1) stable; urgency=low
   * Follow upstream.
  --  <peerchemist@protonmail.ch>  Sun, 8 Jan 2016 21:26:05 +0000
