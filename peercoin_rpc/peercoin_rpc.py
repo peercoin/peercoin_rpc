@@ -107,6 +107,11 @@ class Client:
         else:
             return self.req("getbalance")
 
+    def getreceivedbyaddress(self, address, minconf=1):
+        '''Returns the amount received by <address> in transactions
+        with at least [minconf] confirmations.'''
+        return self.req("getreceivedbyaddress", [address, minconf])
+
     def getdifficulty(self):
         '''Get PoS/PoW difficulty'''
         return self.req("getdifficulty")
@@ -135,7 +140,7 @@ class Client:
         '''send ammount to address, with optional comment. Returns txid.
         sendtoaddress(ADDRESS, AMMOUNT, COMMENT)'''
         return self.req("sendtoaddress", [recv_addr, amount, comment])
-    
+
     def sendfrom(self, account, address, amount):
         '''send outgoing tx from specified account to a given address'''
         return self.req("sendfrom", [account, address, amount])
