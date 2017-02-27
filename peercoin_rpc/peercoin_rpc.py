@@ -25,11 +25,11 @@ class Client:
     def __init__(self, testnet=False, username=None, password=None, ip=None, port=None):
 
         if not ip:
-            self.ip = 'localhost' # default to localhost
+            self.ip = 'localhost'  # default to localhost
         else:
             self.ip = ip
         if not username and not password:
-            self.username, self.password = self.userpass() ## try to read from ~/.ppcoin
+            self.username, self.password = self.userpass()  # try to read from ~/.ppcoin
         else:
             self.username = username
             self.password = password
@@ -62,10 +62,10 @@ class Client:
         """send request to ppcoind"""
 
         response = requests.post(self.url,
-            auth=(self.username, self.password), headers=self.headers,
-            data=json.dumps({"method": method,
-                    "params": params,
-                    "jsonrpc": "1.1"})
+                    auth=(self.username, self.password), headers=self.headers,
+                    data=json.dumps({"method": method,
+                                     "params": params,
+                                     "jsonrpc": "1.1"})
                 ).json()
 
         if response["error"] is not None:
