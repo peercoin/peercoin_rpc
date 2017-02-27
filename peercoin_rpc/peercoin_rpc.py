@@ -45,7 +45,9 @@ class Client:
             self.port = port
             self.url = 'http://{0}:{1}'.format(self.ip, self.port)
 
-        self.headers = {'content-type': 'application/json'}
+        self.session = requests.Session()
+        self.session.auth = (self.username, self.password)
+        self.session.headers.update({'content-type': 'application/json'})
 
     def userpass(self):
         '''Reads .ppcoin/ppcoin.conf file for username/password'''
@@ -61,11 +63,10 @@ class Client:
     def req(self, method, params=()):
         """send request to ppcoind"""
 
-        response = requests.post(self.url,
-                    auth=(self.username, self.password), headers=self.headers,
-                    data=json.dumps({"method": method,
-                                     "params": params,
-                                     "jsonrpc": "1.1"})
+        response = self.session.post(self.url,
+                   data=json.dumps({"method": method,
+                                    "params": params,
+                                    "jsonrpc": "1.1"})
                 ).json()
 
         if response["error"] is not None:
