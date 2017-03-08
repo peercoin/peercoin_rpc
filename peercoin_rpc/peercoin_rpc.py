@@ -16,6 +16,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+#Bitcoin API calls 
+#https://en.bitcoin.it/wiki/Original_Bitcoin_client/API_calls_list#Full_list
+
 import getpass
 import requests, json
 
@@ -226,3 +229,6 @@ class Client:
         """Verify a signed message."""
         return self.req("verifymessage", [signature, message])
 
+    def encryptwallet(self,passphrase):
+        '''Encrypt wallet.'''
+        return self.req("encryptwallet",[passphrase])
