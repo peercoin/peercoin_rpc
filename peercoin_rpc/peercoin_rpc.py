@@ -225,9 +225,9 @@ class Client:
         '''Sign a message with the private key of an address.'''
         return self.req("signmessage", [address, str(message)])
 
-    def verifymessage(self, signature, message):
+    def verifymessage(self, address, signature, message):
         """Verify a signed message."""
-        return self.req("verifymessage", [signature, message])
+        return self.req("verifymessage", [address, signature, message])
 
     def encryptwallet(self,passphrase):
         '''Encrypt wallet.'''
