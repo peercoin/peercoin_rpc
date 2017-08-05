@@ -57,7 +57,7 @@ class Client:
 
     def userpass(self, dir='ppcoin'):
         '''Reads config file for username/password'''
-        dest = open('/home/{0}/.{1}/{1}.conf'.format(getpass.getuser()), dir , 'r')
+        dest = open('/home/{0}/.{1}/{1}.conf'.format(getpass.getuser(), dir) , 'r')
         with dest as conf:
             for line in conf:
                 if line.startswith('rpcuser'):
