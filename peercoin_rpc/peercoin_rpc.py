@@ -32,7 +32,10 @@ class Client:
         else:
             self.ip = ip
         if not username and not password:
-            self.username, self.password = self.userpass()  # try to read from ~/.ppcoin
+            try:
+                self.username, self.password = self.userpass()  # try to read from ~/.ppcoin
+            except:
+                self.username, self.password = self.userpass(dir='peercoin')  # try to read from ~/.peercoin
         else:
             self.username = username
             self.password = password
@@ -52,9 +55,10 @@ class Client:
         self.session.auth = (self.username, self.password)
         self.session.headers.update({'content-type': 'application/json'})
 
-    def userpass(self):
-        '''Reads .ppcoin/ppcoin.conf file for username/password'''
-        with open('/home/{0}/.ppcoin/ppcoin.conf'.format(getpass.getuser()), 'r') as conf:
+    def userpass(self, dir='ppcoin'):
+        '''Reads config file for username/password'''
+        dest = open('/home/{0}/.{1}/{1}.conf'.format(getpass.getuser()), dir , 'r')
+        with dest as conf:
             for line in conf:
                 if line.startswith('rpcuser'):
                     username = line.split("=")[1].strip()
