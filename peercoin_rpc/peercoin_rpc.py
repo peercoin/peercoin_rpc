@@ -19,8 +19,7 @@
 #Bitcoin API calls 
 #https://en.bitcoin.it/wiki/Original_Bitcoin_client/API_calls_list#Full_list
 
-import getpass
-import requests, json
+import requests, json, os
 
 class Client:
     '''JSON-RPC Client.'''
@@ -57,7 +56,8 @@ class Client:
 
     def userpass(self, dir='ppcoin'):
         '''Reads config file for username/password'''
-        dest = open('/home/{0}/.{1}/{1}.conf'.format(getpass.getuser(), dir) , 'r')
+        source = os.path.expanduser('~/.{0}/{0}.conf').format(dir)
+        dest = open(source, 'r')
         with dest as conf:
             for line in conf:
                 if line.startswith('rpcuser'):
