@@ -1,18 +1,33 @@
-Source: python-peercoinrpc
+Source: peercoin_rpc
 Section: python
+Architecture: all
 Priority: optional
 Maintainer: Peerchemist, <peerchemist@protonmail.ch>
-Build-Depends: debhelper (>= 7),
-               python (>= 2.7.9-1),
-               dh-python
+Build-Depends: debhelper (>= 9),
+               python-all,
+               dh-python,
+               python3-all,
+               python-setuptools,
+               python3-setuptool,
+               python-requests (>= 2.4.3-1),
+               python3-requests (>= 2.4.3-1)
+
 Standards-Version: 3.9.6
 X-Python-Version: >= 2.7
+X-Python3-Version: >= 3.2
+Vcs-Browser: https://github.com/peerchemist/peercoin_rpc
 
 Package: python-peercoinrpc
-Architecture: all
-Section: python
-Depends: python-requests (>= 2.4.3-1), ${misc:Depends}, ${python:Depends}
+Depends: ${misc:Depends}, ${python:Depends}, python-requests (>= 2.4.3-1)
 Replaces: peercoin-rpc
-Description: Python library to communicate with peercoin daemon via JSON-RPC protocol.
+Description: Python library to communicate with peercoin daemon via JSON-RPC protocol. (Python3)
   Python Library to communicate with peercoin daemon via JSON-RPC protocol implemented with popular python-requests library.
  .
+ This package installs the library for Python 3.
+
+Package: python3-peercoinrpc
+Depends: ${misc:Depends}, ${python3:Depends}, python3-requests (>= 2.4.3-1)
+Description: Python library to communicate with peercoin daemon via JSON-RPC protocol. (Python3)
+  Python Library to communicate with peercoin daemon via JSON-RPC protocol implemented with popular python-requests library.
+ .
+This package installs the library for Python 3.
