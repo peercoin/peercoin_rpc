@@ -1,4 +1,8 @@
-Source: peercoin_rpc
+Standards-Version: 3.9.6
+X-Python-Version: >= 2.7
+X-Python3-Version: >= 3.2
+Vcs-Browser: https://github.com/peerchemist/peercoin_rpc
+Source: peercoinrpc
 Section: python
 Architecture: all
 Priority: optional
@@ -11,11 +15,6 @@ Build-Depends: debhelper (>= 9),
                python3-setuptool,
                python-requests (>= 2.4.3-1),
                python3-requests (>= 2.4.3-1)
-
-Standards-Version: 3.9.6
-X-Python-Version: >= 2.7
-X-Python3-Version: >= 3.2
-Vcs-Browser: https://github.com/peerchemist/peercoin_rpc
 
 Package: python-peercoinrpc
 Depends: ${misc:Depends}, ${python:Depends}, python-requests (>= 2.4.3-1)
