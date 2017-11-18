@@ -21,11 +21,6 @@
 
 import requests, json, os
 
-def EncodeDecimal(o):
-    if isinstance(o, decimal.Decimal):
-        return float(round(o, 8))
-    raise TypeError(repr(o) + " is not JSON serializable")
-
 class Client:
     '''JSON-RPC Client.'''
 
@@ -94,7 +89,7 @@ class Client:
         for req_id, req in enumerate(reqs):
             batch_data.append( {"method": req[0], "params": req[1], "jsonrpc": "2.0", "id": req_id} )
 
-        data = json.dumps(batch_data, default=EncodeDecimal)
+        data = json.dumps(batch_data)
         response = self.session.post(self.url, data=data).json()
     
         for r in response:
