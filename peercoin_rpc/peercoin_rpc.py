@@ -21,6 +21,11 @@
 
 import requests, json, os
 
+def EncodeDecimal(o):
+    if isinstance(o, decimal.Decimal):
+        return float(round(o, 8))
+    raise TypeError(repr(o) + " is not JSON serializable")
+
 class Client:
     '''JSON-RPC Client.'''
 
@@ -80,6 +85,23 @@ class Client:
             return response["error"]
         else:
             return response["result"]
+
+    def batch(self, reqs: list ):
+        """ send batch request using jsonrpc 2.0 """
+
+        batch_data = []
+
+        for req_id, req in enumerate(reqs):
+            batch_data.append( {"method": req[0], "params": req[1], "jsonrpc": "2.0", "id": req_id} )
+
+        data = json.dumps(batch_data, default=EncodeDecimal)
+        response = self.session.post(self.url, data=data).json()
+    
+        for r in response:
+            if r['error'] is not None:
+                return 'Request %i failed with error %i: %s' % (r['id'], r['error']['code'], r['error']['message'])
+            else:
+                return response
 
     ## RPC methods
     ### general syntax is req($method, [array_of_parameters])
