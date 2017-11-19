@@ -16,17 +16,23 @@ import os
 class Client:
     '''JSON-RPC Client.'''
 
-    def __init__(self, testnet=False, username=None, password=None, ip=None, port=None):
+    def __init__(self, testnet=False, username=None, password=None,
+                 ip=None, port=None, directory=None):
 
         if not ip:
             self.ip = 'localhost'  # default to localhost
         else:
             self.ip = ip
+
         if not username and not password:
-            try:
-                self.username, self.password = self.userpass()  # try to read from ~/.ppcoin
-            except:
-                self.username, self.password = self.userpass(dir='peercoin')  # try to read from ~/.peercoin
+            if not directory:
+                try:
+                    self.username, self.password = self.userpass()  # try to read from ~/.ppcoin
+                except:
+                    self.username, self.password = self.userpass(dir='peercoin')  # try to read from ~/.peercoin
+            else:
+                self.username, self.password = self.userpass(dir=directory)  # try some other directory
+
         else:
             self.username = username
             self.password = password
@@ -48,6 +54,7 @@ class Client:
 
     def userpass(self, dir='ppcoin'):
         '''Reads config file for username/password'''
+
         source = os.path.expanduser('~/.{0}/{0}.conf').format(dir)
         dest = open(source, 'r')
         with dest as conf:
