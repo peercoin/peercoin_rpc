@@ -235,7 +235,7 @@ class Client:
 
     def sendrawtransaction(self, signed_rawtxhash):
         '''sends raw transaction, returns txid'''
-        return self.req("sendrawtransaction", [signed_rawtxhash, 1])
+        return self.req("sendrawtransaction", [signed_rawtxhash])
 
     def validateaddress(self, address):
         '''Return information about address.'''
