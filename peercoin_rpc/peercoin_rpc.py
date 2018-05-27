@@ -90,12 +90,7 @@ class Client:
 
         data = json.dumps(batch_data)
         response = self.session.post(self.url, data=data).json()
-    
-        for r in response:
-            if r['error'] is not None:
-                return 'Request %i failed with error %i: %s' % (r['id'], r['error']['code'], r['error']['message'])
-            else:
-                return response
+        return response
 
     ## RPC methods
     ### general syntax is req($method, [array_of_parameters])
