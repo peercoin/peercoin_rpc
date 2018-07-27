@@ -244,6 +244,12 @@ class Client:
         """Verify a signed message."""
         return self.req("verifymessage", [address, signature, message])
 
-    def encryptwallet(self,passphrase):
+    def encryptwallet(self, passphrase):
         '''Encrypt wallet.'''
         return self.req("encryptwallet",[passphrase])
+
+    def enforcecheckpoint(self, true=1):
+        '''true or false to enable or disable enforcement of
+           broadcasted checkpoints by developer.'''
+
+        return self.req('enforcecheckpoint', true)
