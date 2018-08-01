@@ -253,3 +253,8 @@ class Client:
            broadcasted checkpoints by developer.'''
 
         return self.req('enforcecheckpoint', true)
+
+    def keypoolrefill(self, size=100):
+        '''fils the keypoool'''
+
+        return self.req('keypoolrefill', [size])
