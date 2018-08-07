@@ -263,3 +263,8 @@ class Client:
         '''start PoW mining'''
 
         return self.req('setgenerate', [set, proclimit])
+
+    def listlockunspent(self):
+        '''Returns list of temporarily unspendable outputs.'''
+
+        return self.req('listlockunspent')
