@@ -268,3 +268,8 @@ class Client:
         '''Returns list of temporarily unspendable outputs.'''
 
         return self.req('listlockunspent')
+
+    def createmultisig(self, n_required, keys):
+        '''Creates a multi-signature address and returns a json object.'''
+
+        return self.req('createmultisig', [n_required, keys])
