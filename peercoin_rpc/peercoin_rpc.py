@@ -258,3 +258,8 @@ class Client:
         '''fils the keypoool'''
 
         return self.req('keypoolrefill', [size])
+
+    def setgenerate(self, set=True, proclimit=-1):
+        '''start PoW mining'''
+
+        return self.req('setgenerate', [set, proclimit])
