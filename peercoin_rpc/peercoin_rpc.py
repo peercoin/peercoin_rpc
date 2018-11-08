@@ -1,12 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-__copyright__ = "Copyright 2017, The Peerchemist"
+__copyright__ = "Copyright 2018, The Peerchemist"
 __license__ = "MIT"
 __email__ = "peerchemist@protonmail.ch"
 
-# Bitcoin API calls 
+## Bitcoin API calls
 # https://en.bitcoin.it/wiki/Original_Bitcoin_client/API_calls_list#Full_list
+
+## Peercoin API calls
+# https://docs.peercoin.net/#/json-rpc-api-reference
 
 import requests
 import json
