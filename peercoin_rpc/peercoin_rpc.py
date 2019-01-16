@@ -83,7 +83,7 @@ class Client:
         else:
             return response["result"]
 
-    def batch(self, reqs: list ):
+    def batch(self, reqs):
         """ send batch request using jsonrpc 2.0 """
 
         batch_data = []
