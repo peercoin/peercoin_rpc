@@ -17,7 +17,7 @@ with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(name='peercoin_rpc',
-      version='0.59',
+      version='0.60',
       description='Library to communicate with peercoin daemon via JSON-RPC protocol.',
       long_description=long_description,
       long_description_content_type='text/markdown',

@@ -99,16 +99,23 @@ class Client:
     ### general syntax is req($method, [array_of_parameters])
 
     def getinfo(self):
-        """return getinfo from ppcoind"""
+        """return getinfo from peercoind"""
         return self.req("getinfo")
 
     def walletpassphrase(self, passphrase, timeout=99999999, mint_only=True):
         '''used to unlock wallet for minting'''
         return self.req("walletpassphrase", [passphrase, timeout, mint_only])
 
-    def getblock(self, blockhash):
+    def getblock(self, blockhash, decode=False):
         '''returns detail block info.'''
-        return self.req("getblock", [blockhash])
+
+        if not decode:
+            decode = "false"
+
+            return self.req("getblock", [blockhash, decode])
+
+        else:
+            return self.req("getblock", [blockhash])
 
     def getblockcount(self):
         '''Retrieve last block index'''
