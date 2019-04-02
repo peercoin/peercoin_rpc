@@ -234,9 +234,21 @@ class Client:
         '''dump the transaction draft'''
         return self.req("decoderawtransaction", [txhash])
 
-    def signrawtransaction(self, rawtxhash):
-        '''signrawtransaction with privkey, returns status and rawtxhash'''
-        return self.req("signrawtransaction", [rawtxhash])
+    def signrawtransaction(self,
+                           rawtxhash,
+                           parent_tx_outputs=None,
+                           private_key=None):
+        '''signrawtransaction returns status and rawtxhash
+        : rawtxhash - serialized transaction (hex)
+        : parent_tx_outputs - outputs being spent by this transaction
+        : private_key - a private key to sign this transaction with
+        '''
+
+        if not parent_tx_outputs and not private_key:
+            return self.req("signrawtransaction", [rawtxhash])
+        else:
+            return self.req("signrawtransaction",
+                            [rawtxhash, parent_tx_outputs, private_key])
 
     def sendrawtransaction(self, signed_rawtxhash):
         '''sends raw transaction, returns txid'''
