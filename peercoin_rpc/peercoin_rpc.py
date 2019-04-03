@@ -17,24 +17,37 @@ import os
 
 
 class Client:
-    '''JSON-RPC Client.'''
+    """JSON-RPC Client."""
 
-    def __init__(self, testnet=False, username=None, password=None,
-                 ip=None, port=None, directory=None):
+    def __init__(
+        self,
+        testnet=False,
+        username=None,
+        password=None,
+        ip=None,
+        port=None,
+        directory=None,
+    ):
 
         if not ip:
-            self.ip = 'localhost'  # default to localhost
+            self.ip = "localhost"  # default to localhost
         else:
             self.ip = ip
 
         if not username and not password:
             if not directory:
                 try:
-                    self.username, self.password = self.userpass()  # try to read from ~/.ppcoin
+                    self.username, self.password = (
+                        self.userpass()
+                    )  # try to read from ~/.ppcoin
                 except:
-                    self.username, self.password = self.userpass(dir='peercoin')  # try to read from ~/.peercoin
+                    self.username, self.password = self.userpass(
+                        dir="peercoin"
+                    )  # try to read from ~/.peercoin
             else:
-                self.username, self.password = self.userpass(dir=directory)  # try some other directory
+                self.username, self.password = self.userpass(
+                    dir=directory
+                )  # try some other directory
 
         else:
             self.username = username
@@ -42,27 +55,27 @@ class Client:
         if testnet is True:
             self.testnet = True
             self.port = 9904
-            self.url = 'http://{0}:{1}'.format(self.ip, self.port)
+            self.url = "http://{0}:{1}".format(self.ip, self.port)
         else:
             self.testnet = False
             self.port = 9902
-            self.url = 'http://{0}:{1}'.format(self.ip, self.port)
+            self.url = "http://{0}:{1}".format(self.ip, self.port)
         if port is not None:
             self.port = port
-            self.url = 'http://{0}:{1}'.format(self.ip, self.port)
+            self.url = "http://{0}:{1}".format(self.ip, self.port)
 
         self.session = requests.Session()
         self.session.auth = (self.username, self.password)
-        self.session.headers.update({'content-type': 'application/json'})
+        self.session.headers.update({"content-type": "application/json"})
 
-    def userpass(self, dir='ppcoin'):
-        '''Reads config file for username/password'''
+    def userpass(self, dir="ppcoin"):
+        """Reads config file for username/password"""
 
-        source = os.path.expanduser('~/.{0}/{0}.conf').format(dir)
-        dest = open(source, 'r')
+        source = os.path.expanduser("~/.{0}/{0}.conf").format(dir)
+        dest = open(source, "r")
         with dest as conf:
             for line in conf:
-                if line.startswith('rpcuser'):
+                if line.startswith("rpcuser"):
                     username = line.split("=")[1].strip()
                 if line.startswith("rpcpassword"):
                     password = line.split("=")[1].strip()
@@ -72,11 +85,10 @@ class Client:
     def req(self, method, params=()):
         """send request to ppcoind"""
 
-        response = self.session.post(self.url,
-                   data=json.dumps({"method": method,
-                                    "params": params,
-                                    "jsonrpc": "1.1"})
-                ).json()
+        response = self.session.post(
+            self.url,
+            data=json.dumps({"method": method, "params": params, "jsonrpc": "1.1"}),
+        ).json()
 
         if response["error"] is not None:
             return response["error"]
@@ -89,7 +101,9 @@ class Client:
         batch_data = []
 
         for req_id, req in enumerate(reqs):
-            batch_data.append( {"method": req[0], "params": req[1], "jsonrpc": "2.0", "id": req_id} )
+            batch_data.append(
+                {"method": req[0], "params": req[1], "jsonrpc": "2.0", "id": req_id}
+            )
 
         data = json.dumps(batch_data)
         response = self.session.post(self.url, data=data).json()
@@ -103,11 +117,11 @@ class Client:
         return self.req("getinfo")
 
     def walletpassphrase(self, passphrase, timeout=99999999, mint_only=True):
-        '''used to unlock wallet for minting'''
+        """used to unlock wallet for minting"""
         return self.req("walletpassphrase", [passphrase, timeout, mint_only])
 
     def getblock(self, blockhash, decode=False):
-        '''returns detail block info.'''
+        """returns detail block info."""
 
         if not decode:
             decode = "false"
@@ -118,148 +132,146 @@ class Client:
             return self.req("getblock", [blockhash])
 
     def getblockcount(self):
-        '''Retrieve last block index'''
+        """Retrieve last block index"""
         return self.req("getblockcount")
 
     def getblockhash(self, index):
-        '''retrieve block hash'''
+        """retrieve block hash"""
         return self.req("getblockhash", [index])
 
     def gettransaction(self, txid):
-        '''get transaction info'''
+        """get transaction info"""
         return self.req("gettransaction", [txid])
 
     def getbalance(self, account=None, minconf=6):
-        '''retrieve balance, If [account] is specified, returns the balance in the account.'''
+        """retrieve balance, If [account] is specified, returns the balance in the account."""
         if account:
             return self.req("getbalance", [account, minconf])
         else:
             return self.req("getbalance")
 
     def getreceivedbyaddress(self, address, minconf=1):
-        '''Returns the amount received by <address> in transactions
-        with at least [minconf] confirmations.'''
+        """Returns the amount received by <address> in transactions
+        with at least [minconf] confirmations."""
         return self.req("getreceivedbyaddress", [address, minconf])
 
     def getdifficulty(self):
-        '''Get PoS/PoW difficulty'''
+        """Get PoS/PoW difficulty"""
         return self.req("getdifficulty")
 
     def getpeerinfo(self):
-        '''Get connected peer's info'''
+        """Get connected peer's info"""
         return self.req("getpeerinfo")
 
     def getaddressesbyaccount(self, account=""):
-        '''can be used to list asociated addresses'''
+        """can be used to list asociated addresses"""
         return self.req("getaddressesbyaccount", [account])
 
     def getnewaddress(self, label=""):
-        '''return new address'''
+        """return new address"""
         return self.req("getnewaddress", [label])
 
     def getaccount(self, address):
-        '''get account associated with <address>'''
+        """get account associated with <address>"""
         return self.req("getaccount", [address])
 
     def getaccountaddress(self, account):
-        '''get address associated with the <account>'''
+        """get address associated with the <account>"""
         return self.req("getaccountaddress", [account])
 
     def sendtoaddress(self, recv_addr, amount, comment=""):
-        '''send ammount to address, with optional comment. Returns txid.
-        sendtoaddress(ADDRESS, AMMOUNT, COMMENT)'''
+        """send ammount to address, with optional comment. Returns txid.
+        sendtoaddress(ADDRESS, AMMOUNT, COMMENT)"""
         return self.req("sendtoaddress", [recv_addr, amount, comment])
 
     def sendfrom(self, account, address, amount):
-        '''send outgoing tx from specified account to a given address'''
+        """send outgoing tx from specified account to a given address"""
         return self.req("sendfrom", [account, address, amount])
 
     def sendmany(self, recv_dict, account="", comment=""):
-        '''send outgoing tx to many addresses, input is dict of addr:coins, returns txid'''
-        #{"addr1":#coin,"addr2":#coin,"addr3":#coin...}
+        """send outgoing tx to many addresses, input is dict of addr:coins, returns txid"""
+        # {"addr1":#coin,"addr2":#coin,"addr3":#coin...}
         return self.req("sendmany", [account, recv_dict, comment])
 
     def getconnectioncount(self):
-        '''Get number of active connections'''
+        """Get number of active connections"""
         return self.req("get_conn_count")
 
     def getrawtransaction(self, txid, verbose=0):
-        '''get raw transaction
+        """get raw transaction
         If verbose=0, returns serialized, hex-encoded data for transaction txid.
         If verbose is non-zero, returns a JSON Object containing information about the transaction.
-        Returns an error if <txid> is unknown.'''
+        Returns an error if <txid> is unknown."""
         return self.req("getrawtransaction", [txid, verbose])
 
     def getrawmempool(self):
-        '''returns raw mempool'''
+        """returns raw mempool"""
         return self.req("getrawmempool")
 
     def listtransactions(self, account="", many=999, since=0):
-        '''list all transactions associated with this wallet'''
+        """list all transactions associated with this wallet"""
         return self.req("listtransactions", [account, many, since])
 
     def listreceivedbyaddress(self, minconf=0, includeempty=True):
-        '''get list of all accounts in the wallet'''
+        """get list of all accounts in the wallet"""
         return self.req("listreceivedbyaddress", [minconf, includeempty])
 
     def listreceivedbyaccount(self, minconf=0, includeempty=True):
-        '''list received by account'''
+        """list received by account"""
         return self.req("listreceivedbyaccount", [minconf, includeempty])
 
     def listaccounts(self, minconf=1):
-        '''list accounts in the wallet'''
+        """list accounts in the wallet"""
         return self.req("listaccounts", [minconf])
 
     def listunspent(self, minconf=1, maxconf=999999):
-        '''list only unspent UTXO's'''
+        """list only unspent UTXO's"""
         return self.req("listunspent", [minconf, maxconf])
 
     def dumpprivkey(self, addr):
-        '''returns privkey of address in WIF format.'''
+        """returns privkey of address in WIF format."""
         return self.req("dumpprivkey", [addr])
 
     def importprivkey(self, wif, account_name=""):
-        '''Import privatekey in WIF format'''
+        """Import privatekey in WIF format"""
         return self.req("importprivkey", [wif, account_name])
 
     def createrawtransaction(self, inputs, outputs):
-        '''[{"txid":input_txid,"vout":0}, ...], {recv_addr: amount, change: amount, ...}'''
+        """[{"txid":input_txid,"vout":0}, ...], {recv_addr: amount, change: amount, ...}"""
         if not isinstance(outputs, dict):
-            raise TypeError('outputs variable must be a dictionary')
+            raise TypeError("outputs variable must be a dictionary")
         if not isinstance(inputs, list):
-            raise TypeError('inputs variable must be a list')
+            raise TypeError("inputs variable must be a list")
         return self.req("createrawtransaction", [inputs, outputs])
 
     def decoderawtransaction(self, txhash):
-        '''dump the transaction draft'''
+        """dump the transaction draft"""
         return self.req("decoderawtransaction", [txhash])
 
-    def signrawtransaction(self,
-                           rawtxhash,
-                           parent_tx_outputs=None,
-                           private_key=None):
-        '''signrawtransaction returns status and rawtxhash
+    def signrawtransaction(self, rawtxhash, parent_tx_outputs=None, private_key=None):
+        """signrawtransaction returns status and rawtxhash
         : rawtxhash - serialized transaction (hex)
         : parent_tx_outputs - outputs being spent by this transaction
         : private_key - a private key to sign this transaction with
-        '''
+        """
 
         if not parent_tx_outputs and not private_key:
             return self.req("signrawtransaction", [rawtxhash])
         else:
-            return self.req("signrawtransaction",
-                            [rawtxhash, parent_tx_outputs, private_key])
+            return self.req(
+                "signrawtransaction", [rawtxhash, parent_tx_outputs, private_key]
+            )
 
     def sendrawtransaction(self, signed_rawtxhash):
-        '''sends raw transaction, returns txid'''
+        """sends raw transaction, returns txid"""
         return self.req("sendrawtransaction", [signed_rawtxhash])
 
     def validateaddress(self, address):
-        '''Return information about address.'''
+        """Return information about address."""
         return self.req("validateaddress", [address])
 
     def signmessage(self, address, message):
-        '''Sign a message with the private key of an address.'''
+        """Sign a message with the private key of an address."""
         return self.req("signmessage", [address, str(message)])
 
     def verifymessage(self, address, signature, message):
@@ -267,31 +279,31 @@ class Client:
         return self.req("verifymessage", [address, signature, message])
 
     def encryptwallet(self, passphrase):
-        '''Encrypt wallet.'''
-        return self.req("encryptwallet",[passphrase])
+        """Encrypt wallet."""
+        return self.req("encryptwallet", [passphrase])
 
     def enforcecheckpoint(self, true=1):
-        '''true or false to enable or disable enforcement of
-           broadcasted checkpoints by developer.'''
+        """true or false to enable or disable enforcement of
+           broadcasted checkpoints by developer."""
 
-        return self.req('enforcecheckpoint', true)
+        return self.req("enforcecheckpoint", true)
 
     def keypoolrefill(self, size=100):
-        '''fils the keypoool'''
+        """fils the keypoool"""
 
-        return self.req('keypoolrefill', [size])
+        return self.req("keypoolrefill", [size])
 
     def setgenerate(self, set=True, proclimit=-1):
-        '''start PoW mining'''
+        """start PoW mining"""
 
-        return self.req('setgenerate', [set, proclimit])
+        return self.req("setgenerate", [set, proclimit])
 
     def listlockunspent(self):
-        '''Returns list of temporarily unspendable outputs.'''
+        """Returns list of temporarily unspendable outputs."""
 
-        return self.req('listlockunspent')
+        return self.req("listlockunspent")
 
     def createmultisig(self, n_required, keys):
-        '''Creates a multi-signature address and returns a json object.'''
+        """Creates a multi-signature address and returns a json object."""
 
-        return self.req('createmultisig', [n_required, keys])
+        return self.req("createmultisig", [n_required, keys])
