@@ -1,7 +1,0 @@
-Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: peercoin_rpc
-Upstream-Contact: Peerchemist, <peerchemist@protonmail.ch>
-
-Files: *
-Copyright: 2017, Peerchemist, <peerchemist@protonmail.ch>
-License: MIT
