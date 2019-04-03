@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-__copyright__ = "Copyright 2018, The Peerchemist"
+__copyright__ = "Copyright 2019, The Peerchemist"
 __license__ = "MIT"
 __email__ = "peerchemist@protonmail.ch"
 
