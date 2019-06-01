@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+# Updated to Peercoin V0.8 by saeveritt
 
 __copyright__ = "Copyright 2019, The Peerchemist"
 __license__ = "MIT"
@@ -83,7 +84,7 @@ class Client:
         return username, password
 
     def req(self, method, params=()):
-        """send request to ppcoind"""
+        """send request to peercoind"""
 
         response = self.session.post(
             self.url,
@@ -112,198 +113,230 @@ class Client:
     ## RPC methods
     ### general syntax is req($method, [array_of_parameters])
 
-    def getinfo(self):
-        """return getinfo from peercoind"""
-        return self.req("getinfo")
+# == Blockchain ==
 
-    def walletpassphrase(self, passphrase, timeout=99999999, mint_only=True):
-        """used to unlock wallet for minting"""
-        return self.req("walletpassphrase", [passphrase, timeout, mint_only])
+    def getblockchaininfo(self):
+        """return getblockchaininfo from peercoind"""
+        return self.req("getblockchaininfo")
 
-    def getblock(self, blockhash, decode=False):
-        """returns detail block info."""
+    def getbestblockhash(self):
+        """return getbestblockhash from peercoind"""
+        return self.req("getbestblockhash")
 
-        if not decode:
-            decode = "false"
-
-            return self.req("getblock", [blockhash, decode])
-
-        else:
-            return self.req("getblock", [blockhash])
+    def getblock(self, blockhash):
+        """return getblock from peercoind"""
+        return self.req("getblock", [ blockhash ])
 
     def getblockcount(self):
-        """Retrieve last block index"""
+        """return getblockcount from peercoind"""
         return self.req("getblockcount")
 
-    def getblockhash(self, index):
-        """retrieve block hash"""
-        return self.req("getblockhash", [index])
+    def getblockhash(self, height):
+        """return getblockhash from peercoind"""
+        return self.req("getblockhash", [ height ])
 
-    def gettransaction(self, txid):
-        """get transaction info"""
-        return self.req("gettransaction", [txid])
+    def getblockheader(self, hash, verbose=False):
+        """return getblockheader from peercoind"""
+        return self.req("getblockheader")
 
-    def getbalance(self, account=None, minconf=6):
-        """retrieve balance, If [account] is specified, returns the balance in the account."""
-        if account:
-            return self.req("getbalance", [account, minconf])
-        else:
-            return self.req("getbalance")
+    def getchaintips(self):
+        """return getchaintips from peercoind"""
+        return self.req("getchaintips")
 
-    def getreceivedbyaddress(self, address, minconf=1):
-        """Returns the amount received by <address> in transactions
-        with at least [minconf] confirmations."""
-        return self.req("getreceivedbyaddress", [address, minconf])
+    def getchaintxstats(self, nblocks=0, blockhash=""):
+        """return getchaintxstats from peercoind"""
+        query = nblocks
+        if nblocks == 0 and blockhash != "":
+            query = blockhash
+        return self.req("getchaintxstats", [ query ])
 
     def getdifficulty(self):
-        """Get PoS/PoW difficulty"""
+        """return getdifficulty from peercoind"""
         return self.req("getdifficulty")
 
-    def getpeerinfo(self):
-        """Get connected peer's info"""
-        return self.req("getpeerinfo")
+    def getmempoolancestors(self, txid, verbose=False):
+        """return getinfo from peercoind"""
+        return self.req("getbestblockhash", [ txid, verbose ])
 
-    def getaddressesbyaccount(self, account=""):
-        """can be used to list asociated addresses"""
-        return self.req("getaddressesbyaccount", [account])
+    def getmempoolentry(self, txid):
+        """return getmempoolentry from peercoind"""
+        return self.req("getmempoolentry", [ txid ])
 
-    def getnewaddress(self, label=""):
-        """return new address"""
-        return self.req("getnewaddress", [label])
+    def getmempoolinfo(self):
+        """return getinfo from peercoind"""
+        return self.req("getmempoolinfo")
 
-    def getaccount(self, address):
-        """get account associated with <address>"""
-        return self.req("getaccount", [address])
+    def getrawmempool(self, verbose=False):
+        """return getrawmempool from peercoind"""
+        return self.req("getrawmempool", [ verbose ])
 
-    def getaccountaddress(self, account):
-        """get address associated with the <account>"""
-        return self.req("getaccountaddress", [account])
+    def gettxout(self, txid, n, include_mempool=False):
+        """return gettxout from peercoind"""
+        return self.req("gettxout", [ txid, n, include_mempool ])
 
-    def sendtoaddress(self, recv_addr, amount, comment=""):
-        """send ammount to address, with optional comment. Returns txid.
-        sendtoaddress(ADDRESS, AMMOUNT, COMMENT)"""
-        return self.req("sendtoaddress", [recv_addr, amount, comment])
-
-    def sendfrom(self, account, address, amount):
-        """send outgoing tx from specified account to a given address"""
-        return self.req("sendfrom", [account, address, amount])
-
-    def sendmany(self, recv_dict, account="", comment=""):
-        """send outgoing tx to many addresses, input is dict of addr:coins, returns txid"""
-        # {"addr1":#coin,"addr2":#coin,"addr3":#coin...}
-        return self.req("sendmany", [account, recv_dict, comment])
-
-    def getconnectioncount(self):
-        """Get number of active connections"""
-        return self.req("get_conn_count")
-
-    def getrawtransaction(self, txid, verbose=0):
-        """get raw transaction
-        If verbose=0, returns serialized, hex-encoded data for transaction txid.
-        If verbose is non-zero, returns a JSON Object containing information about the transaction.
-        Returns an error if <txid> is unknown."""
-        return self.req("getrawtransaction", [txid, verbose])
-
-    def getrawmempool(self):
-        """returns raw mempool"""
-        return self.req("getrawmempool")
-
-    def listtransactions(self, account="", many=999, since=0):
-        """list all transactions associated with this wallet"""
-        return self.req("listtransactions", [account, many, since])
-
-    def listreceivedbyaddress(self, minconf=0, includeempty=True):
-        """get list of all accounts in the wallet"""
-        return self.req("listreceivedbyaddress", [minconf, includeempty])
-
-    def listreceivedbyaccount(self, minconf=0, includeempty=True):
-        """list received by account"""
-        return self.req("listreceivedbyaccount", [minconf, includeempty])
-
-    def listaccounts(self, minconf=1):
-        """list accounts in the wallet"""
-        return self.req("listaccounts", [minconf])
-
-    def listunspent(self, minconf=1, maxconf=999999):
-        """list only unspent UTXO's"""
-        return self.req("listunspent", [minconf, maxconf])
-
-    def dumpprivkey(self, addr):
-        """returns privkey of address in WIF format."""
-        return self.req("dumpprivkey", [addr])
-
-    def importprivkey(self, wif, account_name=""):
-        """Import privatekey in WIF format"""
-        return self.req("importprivkey", [wif, account_name])
-
-    def createrawtransaction(self, inputs, outputs):
-        """[{"txid":input_txid,"vout":0}, ...], {recv_addr: amount, change: amount, ...}"""
-        if not isinstance(outputs, dict):
-            raise TypeError("outputs variable must be a dictionary")
-        if not isinstance(inputs, list):
-            raise TypeError("inputs variable must be a list")
-        return self.req("createrawtransaction", [inputs, outputs])
-
-    def decoderawtransaction(self, txhash):
-        """dump the transaction draft"""
-        return self.req("decoderawtransaction", [txhash])
-
-    def signrawtransaction(self, rawtxhash, parent_tx_outputs=None, private_key=None):
-        """signrawtransaction returns status and rawtxhash
-        : rawtxhash - serialized transaction (hex)
-        : parent_tx_outputs - outputs being spent by this transaction
-        : private_key - a private key to sign this transaction with
-        """
-
-        if not parent_tx_outputs and not private_key:
-            return self.req("signrawtransaction", [rawtxhash])
+    def gettxoutproof(self, txids=[], blockhash=""):
+        """return gettxoutproof from peercoind"""
+        if blockhash == "":
+            return self.req("gettxoutproof", [ txids ])
         else:
-            return self.req(
-                "signrawtransaction", [rawtxhash, parent_tx_outputs, private_key]
-            )
+            return self.req("gettxoutproof", [ txids, blockhash ])
 
-    def sendrawtransaction(self, signed_rawtxhash):
-        """sends raw transaction, returns txid"""
-        return self.req("sendrawtransaction", [signed_rawtxhash])
+    def gettxoutsetinfo(self):
+        """return gettxoutsetinfo from peercoind"""
+        return self.req("gettxoutsetinfo")
+
+    def preciousblock(self, blockhash=""):
+        """return preciousblock from peercoind"""
+        return self.req("preciousblock", [ blockhash ])
+
+    def savemempool(self):
+        """return savemempool from peercoind"""
+        return self.req("savemempool")
+
+    def verifychain(self, checklevel=3, nblocks=6):
+        """return verifychain from peercoind"""
+        return self.req("verifychain", [ checklevel, nblocks ])
+
+    def verifytxoutproof(self, proof):
+        """return verifytxoutproof from peercoind"""
+        return self.req("gettxout", [ proof ])
+
+# == Control ==
+
+    def getmemoryinfo(self, mode=None):
+        """return getmemoryinfo from peercoind"""
+        if mode:
+            return self.req("getmemoryinfo", [ mode ])
+        else:
+            return self.req("getmemoryinfo")
+
+    def stop(self):
+        """stop peercoind"""
+        return self.req("stop")
+
+    def uptime(self):
+        """return uptime from peercoind"""
+        return self.req("uptime")
+
+# == Mining ==
+
+    def getmininginfo(self):
+        """return getmininginfo from peercoind"""
+        return self.req("getmininginfo")
+
+    def getnetworkhashps(self, nblocks=None, height=None):
+        """return getnetworkhashps from peercoind"""
+        if nblocks is not None:
+            if height is None:
+                return self.req("getnetworkhashps", [ nblocks ])
+            else:
+                return self.req("getnetworkhashps", [ nblocks, height ])
+        else:
+            return self.req("getnetworkhps")
+
+# == Rawtransactions ==
+
+    def combinerawtransaction(self, hexstrings=[]):
+        """return combinerawtransaction from peercoind"""
+        return self.req("combinerawtransaction", [ hexstrings ])
+
+    def createrawtransaction(self, inputs=[], outputs={}, locktime=None):
+        """return createrawtransaction from peercoind"""
+        if locktime:
+            return self.req("createrawtransaction", [ inputs, outputs, locktime ])
+        else:
+            return self.req("createrawtransaction", [ inputs, outputs ])
+
+    def decoderawtransaction(self, hexstrings, iswitness=False):
+        """return decoderawtransaction from peercoind"""
+        return self.req("decoderawtransaction", [ hexstrings, iswitness ])
+
+    def decodescript(self, hexstring):
+        """return decodescript from peercoind"""
+        return self.req("decodescript", [ hexstring ])
+    
+    def getrawtransaction(self, txid, verbose=False):
+        """return getrawtransaction from peercoind"""
+        return self.req("getrawtransaction", [ txid, verbose ])
+
+    def sendrawtransaction(self, hexstring):
+        """return sendrawtransaction from peercoind"""
+        return self.req("sendrawtransaction", [ hexstring ])
+
+# == Util ==
 
     def validateaddress(self, address):
-        """Return information about address."""
-        return self.req("validateaddress", [address])
-
-    def signmessage(self, address, message):
-        """Sign a message with the private key of an address."""
-        return self.req("signmessage", [address, str(message)])
+        """return validateaddress from peercoind"""
+        return self.req("validateaddress", [ address ])
 
     def verifymessage(self, address, signature, message):
-        """Verify a signed message."""
-        return self.req("verifymessage", [address, signature, message])
+        """return decodescript from peercoind"""
+        return self.req("verifymessage", [ address, signature, message ])
 
-    def encryptwallet(self, passphrase):
-        """Encrypt wallet."""
-        return self.req("encryptwallet", [passphrase])
+# == Wallet ==
 
-    def enforcecheckpoint(self, true=1):
-        """true or false to enable or disable enforcement of
-           broadcasted checkpoints by developer."""
+    def dumpprivkey(self, address):
+        """return dumpprivkey from peercoind"""
+        return self.req("dumpprivkey", [ address ])
 
-        return self.req("enforcecheckpoint", true)
+    def getaccount(self, address):
+        """return getaccount from peercoind"""
+        return self.req("getaccount", [ address ])
 
-    def keypoolrefill(self, size=100):
-        """fils the keypoool"""
+    def getaccountaddress(self, account):
+        """return getaccountaddress from peercoind"""
+        return self.req("getaccountaddress", [ account ])
 
-        return self.req("keypoolrefill", [size])
+    def getaddressesbyaccount(self, account):
+        """return decodescript from peercoind"""
+        return self.req("getaddressesbyaccount", [ account ])
 
-    def setgenerate(self, set=True, proclimit=-1):
-        """start PoW mining"""
+    def getbalance(self, account="*", minconf=0, include_watchonly=False):
+        """return getbalance from peercoind"""
+        return self.req("getbalance", [ account, minconf, include_watchonly ])
 
-        return self.req("setgenerate", [set, proclimit])
+    def getreceivedbyaccount(self, account, minconf=0):
+        """return getreceivedbyaccount from peercoind"""
+        return self.req("getreceivedbyaccount", [ account, minconf ])
+    
+    def getreceivedbyaddress(self, address, minconf=0):
+        """ getreceivedbyaddress from peercoind"""
+        return self.req("getreceivedbyaddress", [ address, minconf ])
 
-    def listlockunspent(self):
-        """Returns list of temporarily unspendable outputs."""
+    def gettransaction(self, txid, include_watchonly=True):
+        """return gettransaction from peercoind"""
+        return self.req("decodescript", [ hexstring ])
 
-        return self.req("listlockunspent")
+    def getwalletinfo(self):
+        """return getwalletinfo from peercoind"""
+        return self.req("getwalletinfo")
 
-    def createmultisig(self, n_required, keys):
-        """Creates a multi-signature address and returns a json object."""
+    def importaddress(self, address, label="", rescan=True):
+        """return importaddress from peercoind"""
+        return self.req("importaddress", [ address, label, rescan ])
+    
+    def importprivkey(self, privkey, label="", rescan=True):
+        """return importprivkey from peercoind"""
+        return self.req("importprivkey", [ privkey, label, rescan ])
 
-        return self.req("createmultisig", [n_required, keys])
+    def listaccounts(self, minconf=0, include_watchonly=True):
+        """return listaccounts from peercoind"""
+        return self.req("listaccounts", [ minconf, include_watchonly])
+
+    def listtransactions(self, account="*", count=99999, skip=0, include_watchonly=True):
+        """return listtransactions from peercoind"""
+        return self.req(self, [ account, count, skip, include_watchonly ])
+
+    def rescanblockchain(self, startheigh=None, stopheight=None):
+        """return rescanblockchain from peercoind"""
+        if startheight is not None:
+            if stopheight is not None:
+                return self.req("rescanblockchain", [ startheight, stopheight ])
+            else:
+                return self.req("rescanblockchain", [ startheight ])
+        else:
+            return self.req("rescanblockchain")
+
+    def walletpassphrase(self, passphrase, timeout):
+        """ return wallerpassphrase from peercoind"""
+        return self.req("walletpassphrase", [ passphrase, timeout])
