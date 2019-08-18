@@ -26,12 +26,12 @@ or
 
 Spawn a new Client object with desired arguments:
 
-> ppcnode = Client(testnet=True, username="username", password="password", ip=<ip>, port=<port>)
+> node = Client(testnet=True, username="username", password="password", ip=<ip>, port=<port>)
 
 Use it:
 
-> ppcnode.getinfo()
+> node.getblockchaininfo()
 
-> ppcnode.getpeerinfo()
+> node.getpeerinfo()
 
-> ppcnode.getbalance()
+> node.getbalance()
